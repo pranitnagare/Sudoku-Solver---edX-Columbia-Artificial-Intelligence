@@ -5,7 +5,7 @@ Created on Thu Mar 16 12:58:50 2017
 @author: Pranit
 """
 
-import Queue
+import queue
 rows = 'ABCDEFGHI'
 cols = '123456789'
 pos_val = '123456789'
@@ -39,8 +39,8 @@ for examples in range(0,len(sudokus_start)):
     def show_grid(Sudoku):
         for i in rows:
             for j in cols:
-                print Sudoku[i+j],'   ',
-            print '\n'
+                print (Sudoku[i+j],'   ',)
+            print ('\n')
     for i in rows:
         row_key.append([i+j  for j in cols])
     for j in cols:
@@ -53,7 +53,7 @@ for examples in range(0,len(sudokus_start)):
     def AC3(sudok,vals):
         sud = dict(sudok)
         values = dict(vals)
-        arc_queue = Queue.Queue() 
+        arc_queue = queue.Queue() 
         visited = set()
         for s,d in sud.items():
             if (d!='0'):
@@ -126,7 +126,7 @@ for examples in range(0,len(sudokus_start)):
         return
     par_sol = dict((s,pos_val) for s in sudoku)
     update = AC3(sudoku,par_sol)
-    Sol_domain = Queue.LifoQueue()
+    Sol_domain = queue.LifoQueue()
     Sol_domain.put(update)
     bt = 1
     solved = 0
@@ -134,9 +134,9 @@ for examples in range(0,len(sudokus_start)):
     with open('output.txt','r') as f:
         for row in f:
             if row == sudokus_finish[examples]:
-                print '1'
+                print ('1')
                 counter = counter + 1
             else:
-                print '0'
+                print ('0')
                 count_failed.append(examples)
     f.close()
