@@ -49,7 +49,7 @@ neighbors = dict((s, set(sum(units[s],[]))-set([s])) for s in sudoku)
 
 # Arc Consistency 
 def AC3(sud,values):
-    arc_queue = Queue.Queue() 
+    arc_queue = queue.Queue() 
     visited = set()
     for s,d in sud.items():
         if (d!='0'):
@@ -124,7 +124,7 @@ def backtrack(Sol_domain,solved):
 
 par_sol = dict((s,pos_val) for s in sudoku)
 updated = AC3(sudoku,par_sol)
-Sol_domain = Queue.LifoQueue()
+Sol_domain = queue.LifoQueue()
 Sol_domain.put(updated)
 bt = 1
 solved = 0
