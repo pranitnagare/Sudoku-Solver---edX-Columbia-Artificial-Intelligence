@@ -5,44 +5,49 @@ Created on Tue Mar 14 18:50:41 2017
 @author: Pranit
 """
 
-import Queue
+import queue
 import sys
 rows = 'ABCDEFGHI'
 cols = '123456789'
 pos_val = '123456789'
-sudokus_start = []
-with open(sys.argv[1],'r') as f:
-    for row in f:
-        sudokus_start.append(row)
-f.close()
+
+# give unsolved sudoku as string of length 81 with 0 in blank spaces.
+# example: python driver.py 003020600900305001001806400008102900700000008006708200002609500800203009005010300
+
+sudokus_start = sys.argv[1]
 row_key = []
 col_key = []
 unit_key = []
 keys = [i+j for i in rows for j in cols ]
 init_values = sudokus_start
+
 sudoku = dict(zip(keys,init_values))
+
+# unit is the 3x3 grid that has contain 1 to 9 only.
 def unit(a,b):
     u = []
     for i in a:
         for j in b:
             u.append(i+j)
     return u
+
 def show_grid(Sudoku):
     for i in rows:
         for j in cols:
-            print Sudoku[i+j],'   ',
-        print '\n'
+            print (Sudoku[i+j],'   ',)
+        print ('\n')
+        
 for i in rows:
     row_key.append([i+j  for j in cols])
 for j in cols:
     col_key.append([i+j for i in rows])
-unit_key = [unit(i,j) for i in ['ABC','DEF','GHI'] for j in ['123','456','789']]
 
+unit_key = [unit(i,j) for i in ['ABC','DEF','GHI'] for j in ['123','456','789']]
 
 units = dict((s, [u for u in (row_key + col_key + unit_key) if s in u]) for s in sudoku)
 neighbors = dict((s, set(sum(units[s],[]))-set([s])) for s in sudoku)
 
-
+# Arc Consistency 
 def AC3(sud,values):
     arc_queue = Queue.Queue() 
     visited = set()
@@ -70,6 +75,7 @@ def AC3(sud,values):
                 values[peer] = new_val
 
     return values
+
 def legal(sol):
     flag = 1
     for s,d in sol.items():
@@ -77,6 +83,7 @@ def legal(sol):
             flag = 0
             break
     return flag
+
 def is_solved(updated):
     solution = sudoku
     unassigned=[]
@@ -88,7 +95,6 @@ def is_solved(updated):
             solution[s] = d                
 
     return (solution,unassigned)
-
 
 def backtrack(Sol_domain,solved):
     while not solved:   
